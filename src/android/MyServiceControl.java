@@ -1,23 +1,16 @@
 package com.red_folder.phonegap.plugin.backgroundservice.sample;
 
 import java.io.BufferedReader;
+import java.io.DataOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.UnsupportedEncodingException;
+import java.net.HttpURLConnection;
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.apache.http.HttpEntity;
-import org.apache.http.HttpResponse;
-import org.apache.http.NameValuePair;
-import org.apache.http.StatusLine;
-import org.apache.http.client.ClientProtocolException;
-import org.apache.http.client.HttpClient;
-import org.apache.http.client.entity.UrlEncodedFormEntity;
-import org.apache.http.client.methods.HttpPost;
-import org.apache.http.impl.client.DefaultHttpClient;
-import org.apache.http.message.BasicNameValuePair;
 import org.joda.time.DateTime;
 import org.joda.time.format.DateTimeFormatter;
 import org.joda.time.format.ISODateTimeFormat;
@@ -429,62 +422,49 @@ public class MyServiceControl {
 		}
 		
 		String user = Integer.toString(this.user);
-		StringBuilder builder = new StringBuilder();
-        // Creating HTTP client
-        HttpClient httpClient = new DefaultHttpClient();
-        // Creating HTTP Post
-        HttpPost httpPost = new HttpPost(
-                "http://app.networkingapp.co/request.php");
- 
-        // Building post parameters
-        // key and value pair
-        List<NameValuePair> nameValuePair = new ArrayList<NameValuePair>(2);
-        nameValuePair.add(new BasicNameValuePair("request", "status"));
-        nameValuePair.add(new BasicNameValuePair("userId",user));
- 
-        // Url Encoding the POST parameters
-        try {
-            httpPost.setEntity(new UrlEncodedFormEntity(nameValuePair));
-        } catch (UnsupportedEncodingException e) {
-            // writing error to Log
-        	ManagerError.newError(e);
-            return this.defaultError;
-        }
- 
-        // Making HTTP Request
-        try {
-            HttpResponse response = httpClient.execute(httpPost);
-            StatusLine statusLine = response.getStatusLine();
-    		int statusCode = statusLine.getStatusCode();
-    		
-    		if ( statusCode == 200 ) {
-    			HttpEntity entity = response.getEntity();
-    			InputStream content = entity.getContent();
-    			BufferedReader reader = new BufferedReader(new InputStreamReader(content));
-    			String line;
-    			while((line = reader.readLine()) != null){
-    				builder.append(line);
-    			}
-    		} else {
-    			ManagerError.newLogMessage(
+		
+		try {
+			URL url = new URL("http://app.networkingapp.co/request.php");
+			HttpURLConnection urlConnection = (HttpURLConnection) url.openConnection();
+			
+			String urlParameters = "request=status&userId=" + user;
+			
+			urlConnection.setDoOutput(true);
+			DataOutputStream wr = new DataOutputStream(urlConnection.getOutputStream());
+			wr.writeBytes(urlParameters);
+			wr.flush();
+			wr.close();
+			
+			int responseCode = urlConnection.getResponseCode();
+			
+			if ( responseCode != 200 ) {
+				ManagerError.newLogMessage(
 					"Control.request","Failed to get JSON object");
+				urlConnection.disconnect();
     			return this.defaultError;
-    		}
- 
-            // writing response to log
-    		ManagerError.newLogMessage(
-				"Control.request","Http Response:"+response.toString());
-        } catch (ClientProtocolException e) {
-            // writing exception to log
-        	ManagerError.newError(e);
+			}
+
+			BufferedReader in = new BufferedReader(
+					new InputStreamReader(urlConnection.getInputStream()));
+			String inputLine;
+			StringBuffer response = new StringBuffer();
+
+			while ((inputLine = in.readLine()) != null) {
+				response.append(inputLine);
+			}
+			in.close();
+
+			urlConnection.disconnect();
+			return response.toString();
+			
+		} catch(Exception e) {
+			ManagerError.newError(e);
             return this.defaultError;
-        } catch (IOException e) {
-            // writing exception to log
-        	ManagerError.newError(e);
-            return this.defaultError;
-        }
+		} finally {
+			//urlConnection.disconnect();
+		}
         
-        return builder.toString();
+        //return "{\"error\":true,\"msj\":\"Debe ser un usuario valido para realizar esta acci\u00f3n.\",\"msj_code\":\"rp_usuario_no_existe\"}";
 	}
 	
 	/**

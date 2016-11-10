@@ -1,13 +1,17 @@
 package com.red_folder.phonegap.plugin.backgroundservice.sample;
 
-import java.text.SimpleDateFormat;
+import java.text.DateFormat;
 import java.util.Date;
 
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import android.util.Log;
+import android.app.NotificationManager;
+import android.content.Context;
+import android.net.ConnectivityManager;
+import android.os.Vibrator;
 
+import com.emzac.networking.ManagerError;
 import com.red_folder.phonegap.plugin.backgroundservice.BackgroundService;
 
 public class MyService extends BackgroundService {
@@ -15,19 +19,41 @@ public class MyService extends BackgroundService {
 	private final static String TAG = MyService.class.getSimpleName();
 	
 	private String mHelloTo = "World";
+	private int user = -1;
 
 	@Override
 	protected JSONObject doWork() {
 		JSONObject result = new JSONObject();
 		
 		try {
-			SimpleDateFormat df = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss"); 
-			String now = df.format(new Date(System.currentTimeMillis())); 
+			DateFormat df = DateFormat.getDateTimeInstance();
+			String now = df.format( new Date( System.currentTimeMillis() ) );
 
 			String msg = "Hello " + this.mHelloTo + " - its currently " + now;
 			result.put("Message", msg);
+			result.put("user_id", this.user);
+			
+			NotificationManager mNotificationManager =
+				    (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
 
-			Log.d(TAG, msg);
+			Vibrator vibrar = (Vibrator) getSystemService(Context.VIBRATOR_SERVICE);
+			
+			ConnectivityManager cm =
+			        (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
+			
+			MyServiceControl sc = new MyServiceControl();
+			
+			sc.setUser(this.user);
+			sc.setMyService(this);
+			sc.setContext(getBaseContext());
+			sc.setNotificationManager(mNotificationManager);
+			sc.setVibrar(vibrar);
+			sc.setConnectivity(cm);
+			
+			JSONObject jsonResponse = sc.iniciarVerificacion();
+			result.put("response", jsonResponse);
+			
+			ManagerError.newLogMessage(TAG,msg);
 		} catch (JSONException e) {
 		}
 		
@@ -40,6 +66,7 @@ public class MyService extends BackgroundService {
 		
 		try {
 			result.put("HelloTo", this.mHelloTo);
+			result.put("user", this.user);
 		} catch (JSONException e) {
 		}
 		
@@ -51,6 +78,9 @@ public class MyService extends BackgroundService {
 		try {
 			if (config.has("HelloTo"))
 				this.mHelloTo = config.getString("HelloTo");
+
+			if (config.has("user"))
+				this.user = config.getInt("user");
 		} catch (JSONException e) {
 		}
 		
