@@ -55,6 +55,8 @@
 		<source-file src="src/android/emzac/plugins/SQLiteAndroid.java" target-dir="src/com/emzac/plugins" />
 		<source-file src="src/android/emzac/networking/ManagerError.java" target-dir="src/com/emzac/networking" />
 		<source-file src="src/android/joda-time-2.3.jar" target-dir="libs" />
+		
+		<framework src="org.apache.httpcomponents:httpclient:4.5" />
     </platform>
 	
 </plugin>
