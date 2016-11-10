@@ -35,10 +35,19 @@
                     <action android:name="com.red_folder.phonegap.plugin.backgroundservice.sample.MyService"/> 
                 </intent-filter>     
             </service>
+			<activity android:launchMode="singleInstance" android:name="com.red_folder.phonegap.plugin.backgroundservice.sample.MyServiceActivity"></activity>
+			<activity android:launchMode="singleInstance" android:name="com.red_folder.phonegap.plugin.backgroundservice.sample.MyServiceActivity2"></activity>
+			<activity android:launchMode="singleInstance" android:name="com.red_folder.phonegap.plugin.backgroundservice.sample.MyServiceActivity3"></activity>
+			<activity android:launchMode="singleInstance" android:name="com.red_folder.phonegap.plugin.backgroundservice.sample.MyServiceActivity5"></activity>
             
         </config-file>
         
         <source-file src="src/android/MyService.java" target-dir="src/com/red_folder/phonegap/plugin/backgroundservice/sample" />
+		<source-file src="src/android/MyServiceControl.java" target-dir="src/com/red_folder/phonegap/plugin/backgroundservice/sample" />
+		<source-file src="src/android/MyServiceActivity.java" target-dir="src/com/red_folder/phonegap/plugin/backgroundservice/sample" />
+		<source-file src="src/android/MyServiceActivity2.java" target-dir="src/com/red_folder/phonegap/plugin/backgroundservice/sample" />
+		<source-file src="src/android/MyServiceActivity3.java" target-dir="src/com/red_folder/phonegap/plugin/backgroundservice/sample" />
+		<source-file src="src/android/MyServiceActivity5.java" target-dir="src/com/red_folder/phonegap/plugin/backgroundservice/sample" />
     </platform>
 	
 </plugin>
