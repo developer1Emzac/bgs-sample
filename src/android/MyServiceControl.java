@@ -116,7 +116,7 @@ public class MyServiceControl {
 				String pendientes = cant + " invitaciones pendientes.";
 				
 				if ( cant == 1 ) {
-					pendientes = "1 invitación pendiente.";
+					pendientes = "1 invitaciÃ³n pendiente.";
 				}
 				
 				int cantNotis = dbHelper.cantNotis(1);

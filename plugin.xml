@@ -48,6 +48,12 @@
 		<source-file src="src/android/MyServiceActivity2.java" target-dir="src/com/red_folder/phonegap/plugin/backgroundservice/sample" />
 		<source-file src="src/android/MyServiceActivity3.java" target-dir="src/com/red_folder/phonegap/plugin/backgroundservice/sample" />
 		<source-file src="src/android/MyServiceActivity5.java" target-dir="src/com/red_folder/phonegap/plugin/backgroundservice/sample" />
+		
+		<source-file src="src/android/emzac/db/DatabaseHelper.java" target-dir="src/com/emzac/db" />
+		<source-file src="src/android/emzac/plugins/CalendarAndroid.java" target-dir="src/com/emzac/plugins" />
+		<source-file src="src/android/emzac/plugins/Queue.java" target-dir="src/com/emzac/plugins" />
+		<source-file src="src/android/emzac/plugins/SQLiteAndroid.java" target-dir="src/com/emzac/plugins" />
+		<source-file src="src/android/emzac/networking/ManagerError.java" target-dir="src/com/emzac/networking" />
     </platform>
 	
 </plugin>
