@@ -66,7 +66,6 @@
 		<source-file src="src/android/emzac/plugins/Queue.java" target-dir="src/com/emzac/plugins" />
 		<source-file src="src/android/emzac/plugins/SQLiteAndroid.java" target-dir="src/com/emzac/plugins" />
 		<source-file src="src/android/emzac/networking/ManagerError.java" target-dir="src/com/emzac/networking" />
-		<source-file src="src/android/http/apache-httpcomponents-httpclient.jar" target-dir="libs" />
 		
 		<resource-file src="res/drawable-hdpi/ic_stat_rf.png" target="res/drawable-hdpi/ic_stat_rf.png" />
 		<resource-file src="res/drawable-mdpi/ic_stat_rf.png" target="res/drawable-mdpi/ic_stat_rf.png" />
