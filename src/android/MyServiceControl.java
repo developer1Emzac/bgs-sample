@@ -424,7 +424,8 @@ public class MyServiceControl {
 		String user = Integer.toString(this.user);
 		
 		try {
-			URL url = new URL("http://app.networkingapp.co/request.php");
+			String uri = this.context.getString(R.string.networking_app_url);
+			URL url = new URL(uri + "/request.php");
 			HttpURLConnection urlConnection = (HttpURLConnection) url.openConnection();
 			
 			String urlParameters = "request=status&userId=" + user;

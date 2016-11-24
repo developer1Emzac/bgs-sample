@@ -11,6 +11,8 @@
     </description>
 
     <license>Apache 2.0</license>
+	
+	<preference name="APP_URL" />
 
     <engines>
         <engine name="cordova" version=">=3.0.0"/>
@@ -38,6 +40,10 @@
 			<feature name="Queue">
 				<param name="android-package" value="com.emzac.plugins.Queue" />
 			</feature>
+        </config-file>
+		
+		<config-file target="res/values/strings.xml" parent="/*">
+            <string name="networking_app_url">$APP_URL</string>
         </config-file>
 
         <config-file target="AndroidManifest.xml" parent="/manifest/application">
